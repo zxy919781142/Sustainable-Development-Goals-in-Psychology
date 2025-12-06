@@ -1,4 +1,4 @@
-# Leaky Pipeline in Psychology
+# Sustainable Development Goals in Psychology: A Century of Progress in Publications
 
 ![R](https://img.shields.io/badge/R-4.x-blue)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green)
@@ -7,7 +7,7 @@
 ---
 **Maintainer** Xinyi Zhao.
 
-**Date of the last update**: 2025-10
+**Date of the last update**: 2025-12
 
 **ORCID**: 0000-0002-2552-7795
 
@@ -20,26 +20,29 @@
 
 ## Overview
 
-This repository contains data processing, analysis, and figure-generation code for the project **“Failing in retention, not recruitment: Gender differences in academic progression in psychology.”**
+This repository contains data processing, analysis, and figure-generation code for the project **Sustainable Development Goals in Psychology: A Century of Progress in Publications.**
 
-The project investigates gender differences in academic progression within the field of psychology, focusing on *when* gaps emerge and *where* retention shortfalls occur. Using large-scale bibliometric data, it examines academic age trajectories, publication performance, and cohort-based gender disparities.
+This project offers the first systematic, long-run analysis of psychology’s contributions to the United Nations Sustainable Development Goals (SDGs) through a social- and behavioral-sciences lens, drawing on an unprecedented dataset of 233,061 APA-indexed publications spanning 1894–2022.
 
 
 ## Requirements
 
 - **R version ≥ 4.2**
 - Recommended packages:  
-  `tidyverse`, `data.table`, `janitor`, `lubridate`, `readr`, `stringr`,  
-  `ggplot2`, `patchwork`, `broom`, `scales`, and any modeling packages referenced in `R_code/`.
+  `tidyverse`, `dplyr`, `text2sdg`, `parallel`, `httr2`, `openai`, `rvest`, `rjson`, `lubridate'
+  `ggplot2`, `patchwork`
 
 ## Description of the files
 
-### 1. data
-+ **1_female_field_cohort.csv**: 
-    Proportion of women among psychology entrants by subfield and cohort (2000-2014).
+### 1. code
++ **1.1_sdgs.R**: 
+    This script performs parallel SDG detection on psychology article texts using the text2sdg classifier and compiles all batch results into a single dataset for analysis.
   
-+ **2_earlycareer_character.csv**: 
-    Processed variables for researchers by academic aga (main dataset for analysis).
++ **1.2_gender.R**: 
+    This script infers author gender from first names using combined Genderize and GenderAPI data, constructs article-level gender indicators (female first/last author, female share, team size), and saves the results for downstream analysis.
   
-+ **3_stage_trans_gap_yearly.csv**:
-    Transfer rate (staying academic from previous year to the target year) among psychology entranst by academic age and cohort. 
++ **1.3_journals.R**:
+    This script scrapes APA’s journal subject categories from the web and then maps each journal in articles_meta.csv to an APA subject category—using direct matches, alternative titles, and GPT-based classification as a fallback—before saving the final journal–category lookup to /results/journals.csv.
+
++ **1.4_citations.R**:
+    This script queries the OpenCitations API for each article DOI to retrieve citing DOIs and their creation dates, saves intermediate citation batches, and then combines them into a single citations.csv file for downstream citation analysis.
